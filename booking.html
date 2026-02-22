@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seat Booking</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #111;
+            color: #fff;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        .seat {
+            width: 30px;
+            height: 30px;
+            margin: 5px;
+            background-color: #444;
+            border: 1px solid #333;
+            display: inline-block;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .seat.selected {
+            background-color: #6c757d;
+        }
+
+        .seat.occupied {
+            background-color: #ff4d4d;
+            cursor: not-allowed;
+        }
+
+        .seat-row {
+            margin: 10px 0;
+        }
+
+        .screen {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            height: 50px;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+
+        #bookButton {
+            margin-top: 20px;
+        }
+
+        /* Hover Effect */
+        .seat:hover:not(.selected):not(.occupied) {
+            background-color: #5c85d6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Select Your Seats</h1>
+        <div class="screen">SCREEN</div>
+        <div id="seatLayout" class="text-center"></div>
+        <button id="bookButton" class="btn btn-primary">Book My Slot</button>
+        <button id="nextButton" class="btn btn-success mt-3">Next</button>
+
+        <!-- New container for booking message -->
+        <div id="bookingMessage" class="mt-3 text-white"></div>
+        <div id="nextbutton" class="mt-3 text-white"></div>
+
+
+
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        const seatLayout = document.getElementById("seatLayout");
+        const bookButton = document.getElementById("bookButton");
+
+
+        const rows = 6; // Number of rows
+        const columns = 8; // Number of seats per row
+
+        // Sample array of occupied seats
+        const occupiedSeats = [[1, 2], [3, 5], [4, 7]];
+
+        // Generate seats
+        function createSeats() {
+            seatLayout.innerHTML = ""; // Clear previous content
+            for (let i = 1; i <= rows; i++) {
+                const rowDiv = document.createElement("div");
+                rowDiv.classList.add("seat-row");
+                for (let j = 1; j <= columns; j++) {
+                    const seat = document.createElement("div");
+                    seat.classList.add("seat");
+                    seat.dataset.row = i;
+                    seat.dataset.column = j;
+
+                    // Mark seat as occupied
+                    if (isSeatOccupied(i, j)) {
+                        seat.classList.add("occupied");
+                    }
+
+                    rowDiv.appendChild(seat);
+                }
+                seatLayout.appendChild(rowDiv);
+            }
+        }
+
+        function isSeatOccupied(row, column) {
+            return occupiedSeats.some(seat => seat[0] === row && seat[1] === column);
+        }
+
+        // Handle seat selection
+        seatLayout.addEventListener("click", (e) => {
+            const seat = e.target;
+            if (!seat.classList.contains("seat") || seat.classList.contains("occupied")) return;
+
+            seat.classList.toggle("selected");
+        });
+
+      // Handle booking button click
+bookButton.addEventListener("click", () => {
+    const selectedSeats = document.querySelectorAll(".seat.selected");
+
+    // Check if any seat is selected
+    if (selectedSeats.length === 0) {
+        displayBookingMessage("⚠️ Please select at least one seat.", "text-warning");
+        return;
+    }
+
+    // Map selected seats to their row and column numbers
+    let seatNumbers = Array.from(selectedSeats).map(seat => {
+        return `Row ${seat.dataset.row}: Seat ${seat.dataset.column}`;
+    });
+
+    // Save the selected seats to localStorage
+    localStorage.setItem("selectedSeats", JSON.stringify(seatNumbers));
+
+    // Show booking confirmation message
+    displayBookingMessage(`🎉 You're looking for the following seats: <br>${seatNumbers.join("<br>")} <br> Just Click Next !`, "text-success");
+
+    // Mark seats as occupied
+    selectedSeats.forEach(seat => {
+        seat.classList.remove("selected");
+        seat.classList.add("occupied");
+    });
+});
+
+
+// Function to display a message on the screen
+function displayBookingMessage(message, textClass) {
+    const messageDiv = document.getElementById("bookingMessage");
+
+    // Clear any existing content and add the new message
+    messageDiv.innerHTML = `<div class="${textClass} mt-3"><h5>${message}</h5></div>`;
+}
+
+        // Initialize seats
+        createSeats();
+        // Handle "Next" button click
+document.getElementById("nextButton").addEventListener("click", () => {
+    // Get the selected seats
+    const selectedSeats = document.querySelectorAll(".seat.selected");
+
+    // Check if any seat is selected
+    if (selectedSeats.length === 0) {
+        displayBookingMessage("⚠️ Please select at least one seat before proceeding.", "text-warning");
+        return;
+    }
+
+    // If seats are selected, proceed to the next page
+    window.location.href = "game.html"; // Replace 'game.html' with your desired URL
+});
+
+
+    </script>
+</body>
+</html>

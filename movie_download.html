@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Posters</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #222;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            margin-top: 1050px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        h1 {
+            margin: 20px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            width: 100%;
+        }
+
+        .movie-card {
+            background-color: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            transform: translateY(0);
+            transition: transform 0.3s ease-in-out;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            opacity: 0; /* Initially hidden */
+            transform: translateY(20px); /* Slightly lower for a smooth effect */
+            transition: opacity 1s ease, transform 1s ease; /* Smooth animation */
+            }
+
+        .movie-card.fade-in {
+            opacity: 1; /* Fully visible */
+            transform: translateY(0); /* Original position */
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .poster img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .movie-card:hover .poster img {
+            transform: scale(1.05);
+        }
+
+        .movie-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .movie-info h3 {
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .download-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .download-btn {
+            background-color: #ff6347;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background-color: #e5533b;
+        }
+
+        .download-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .movie-info h3 {
+                font-size: 1.1rem;
+            }
+
+            .download-btn {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .movie-info h3 {
+                font-size: 1rem;
+            }
+
+            .download-btn {
+                font-size: 0.8rem;
+                padding: 8px;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Movie Posters</h1>
+    <div class="container">
+        <div class="movie-card">
+            <div class="poster">
+                <img src="./img/ant man.jpg" alt="Movie 1">
+            </div>
+            <div class="movie-info">
+                <h3>Ant man</h3>
+                <div class="download-options">
+                    <a href="movie1_480p.mp4" download="Movie_Title_1_480p.mp4" class="download-btn">480p</a>
+                    <a href="movie1_720p.mp4" download="Movie_Title_1_720p.mp4" class="download-btn">720p</a>
+                    <a href="movie1_1080p.mp4" download="Movie_Title_1_1080p.mp4" class="download-btn">1080p</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <div class="poster">
+                <img src="./img/avengers.jpg" alt="Movie 2">
+            </div>
+            <div class="movie-info">
+                <h3>Avengers</h3>
+                <div class="download-options">
+                    <a href="movie2_480p.mp4" download="Movie_Title_2_480p.mp4" class="download-btn">480p</a>
+                    <a href="movie2_720p.mp4" download="Movie_Title_2_720p.mp4" class="download-btn">720p</a>
+                    <a href="movie2_1080p.mp4" download="Movie_Title_2_1080p.mp4" class="download-btn">1080p</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <div class="poster">
+                <img src="./img/collage romance.jpg" alt="Movie 1">
+            </div>
+            <div class="movie-info">
+                <h3>Collage Romance</h3>
+                <div class="download-options">
+                    <a href="movie1_480p.mp4" download="Movie_Title_1_480p.mp4" class="download-btn">480p</a>
+                    <a href="movie1_720p.mp4" download="Movie_Title_1_720p.mp4" class="download-btn">720p</a>
+                    <a href="movie1_1080p.mp4" download="Movie_Title_1_1080p.mp4" class="download-btn">1080p</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <div class="poster">
+                <img src="./img/eesho.jpeg" alt="Movie 2">
+            </div>
+            <div class="movie-info">
+                <h3>Eesho</h3>
+                <div class="download-options">
+                    <a href="movie2_480p.mp4" download="Movie_Title_2_480p.mp4" class="download-btn">480p</a>
+                    <a href="movie2_720p.mp4" download="Movie_Title_2_720p.mp4" class="download-btn">720p</a>
+                    <a href="movie2_1080p.mp4" download="Movie_Title_2_1080p.mp4" class="download-btn">1080p</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <div class="poster">
+                <img src="./img/eternals.jpg" alt="Movie 2">
+            </div>
+            <div class="movie-info">
+                <h3>Eternals</h3>
+                <div class="download-options">
+                    <a href="movie2_480p.mp4" download="Movie_Title_2_480p.mp4" class="download-btn">480p</a>
+                    <a href="movie2_720p.mp4" download="Movie_Title_2_720p.mp4" class="download-btn">720p</a>
+                    <a href="movie2_1080p.mp4" download="Movie_Title_2_1080p.mp4" class="download-btn">1080p</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <div class="poster">
+                <img src="./img/Jhon Wick.jpg" alt="Movie 2">
+            </div>
+            <div class="movie-info">
+                <h3>Jhon Wick</h3>
+                <div class="download-options">
+                    <a href="movie2_480p.mp4" download="Movie_Title_2_480p.mp4" class="download-btn">480p</a>
+                    <a href="movie2_720p.mp4" download="Movie_Title_2_720p.mp4" class="download-btn">720p</a>
+                    <a href="movie2_1080p.mp4" download="Movie_Title_2_1080p.mp4" class="download-btn">1080p</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <div class="poster">
+                <img src="./img/jurassic world.jpg" alt="Movie 2">
+            </div>
+            <div class="movie-info">
+                <h3>jurassic World</h3>
+                <div class="download-options">
+                    <a href="movie2_480p.mp4" download="Movie_Title_2_480p.mp4" class="download-btn">480p</a>
+                    <a href="movie2_720p.mp4" download="Movie_Title_2_720p.mp4" class="download-btn">720p</a>
+                    <a href="movie2_1080p.mp4" download="Movie_Title_2_1080p.mp4" class="download-btn">1080p</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <div class="poster">
+                <img src="./img/KGF.jpg" alt="Movie 2">
+            </div>
+            <div class="movie-info">
+                <h3>KGF</h3>
+                <div class="download-options">
+                    <a href="movie2_480p.mp4" download="Movie_Title_2_480p.mp4" class="download-btn">480p</a>
+                    <a href="movie2_720p.mp4" download="Movie_Title_2_720p.mp4" class="download-btn">720p</a>
+                    <a href="movie2_1080p.mp4" download="Movie_Title_2_1080p.mp4" class="download-btn">1080p</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <div class="poster">
+                <img src="./img/kota factory.jpg" alt="Movie 2">
+            </div>
+            <div class="movie-info">
+                <h3>Kota Factory</h3>
+                <div class="download-options">
+                    <a href="movie2_480p.mp4" download="Movie_Title_2_480p.mp4" class="download-btn">480p</a>
+                    <a href="movie2_720p.mp4" download="Movie_Title_2_720p.mp4" class="download-btn">720p</a>
+                    <a href="movie2_1080p.mp4" download="Movie_Title_2_1080p.mp4" class="download-btn">1080p</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <div class="poster">
+                <img src="./img/money heist.jpg" alt="Movie 2">
+            </div>
+            <div class="movie-info">
+                <h3>Money Heist</h3>
+                <div class="download-options">
+                    <a href="movie2_480p.mp4" download="Movie_Title_2_480p.mp4" class="download-btn">480p</a>
+                    <a href="movie2_720p.mp4" download="Movie_Title_2_720p.mp4" class="download-btn">720p</a>
+                    <a href="movie2_1080p.mp4" download="Movie_Title_2_1080p.mp4" class="download-btn">1080p</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <div class="poster">
+                <img src="./img/moon knight.jpg" alt="Movie 2">
+            </div>
+            <div class="movie-info">
+                <h3>Moon knight</h3>
+                <div class="download-options">
+                    <a href="movie2_480p.mp4" download="Movie_Title_2_480p.mp4" class="download-btn">480p</a>
+                    <a href="movie2_720p.mp4" download="Movie_Title_2_720p.mp4" class="download-btn">720p</a>
+                    <a href="movie2_1080p.mp4" download="Movie_Title_2_1080p.mp4" class="download-btn">1080p</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <div class="poster">
+                <img src="./img/spiderman.jpg" alt="Movie 2">
+            </div>
+            <div class="movie-info">
+                <h3>Spiderman</h3>
+                <div class="download-options">
+                    <a href="movie2_480p.mp4" download="Movie_Title_2_480p.mp4" class="download-btn">480p</a>
+                    <a href="movie2_720p.mp4" download="Movie_Title_2_720p.mp4" class="download-btn">720p</a>
+                    <a href="movie2_1080p.mp4" download="Movie_Title_2_1080p.mp4" class="download-btn">1080p</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <div class="poster">
+                <img src="./img/the boys.jpg" alt="Movie 2">
+            </div>
+            <div class="movie-info">
+                <h3>The Boys</h3>
+                <div class="download-options">
+                    <a href="movie2_480p.mp4" download="Movie_Title_2_480p.mp4" class="download-btn">480p</a>
+                    <a href="movie2_720p.mp4" download="Movie_Title_2_720p.mp4" class="download-btn">720p</a>
+                    <a href="movie2_1080p.mp4" download="Movie_Title_2_1080p.mp4" class="download-btn">1080p</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <div class="poster">
+                <img src="./img/thor love of thunder.jpg" alt="Movie 2">
+            </div>
+            <div class="movie-info">
+                <h3>Thor Love of Thunder</h3>
+                <div class="download-options">
+                    <a href="movie2_480p.mp4" download="Movie_Title_2_480p.mp4" class="download-btn">480p</a>
+                    <a href="movie2_720p.mp4" download="Movie_Title_2_720p.mp4" class="download-btn">720p</a>
+                    <a href="movie2_1080p.mp4" download="Movie_Title_2_1080p.mp4" class="download-btn">1080p</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-card">
+            <div class="poster">
+                <img src="./img/uncharted.webp" alt="Movie 2">
+            </div>
+            <div class="movie-info">
+                <h3>Uncharted</h3>
+                <div class="download-options">
+                    <a href="movie2_480p.mp4" download="Movie_Title_2_480p.mp4" class="download-btn">480p</a>
+                    <a href="movie2_720p.mp4" download="Movie_Title_2_720p.mp4" class="download-btn">720p</a>
+                    <a href="movie2_1080p.mp4" download="Movie_Title_2_1080p.mp4" class="download-btn">1080p</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+        const movieCards = document.querySelectorAll('.movie-card');
+        
+        // Delay for the fade-in effect
+        setTimeout(() => {
+            movieCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('fade-in');
+                }, index * 200); // Add a stagger effect
+            });
+        }, 300); // Initial delay
+    });
+    </script>
+</body>
+</html>

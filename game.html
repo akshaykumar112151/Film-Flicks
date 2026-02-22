@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Film Quiz Game</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            overflow-x: hidden;
+        }
+        .container {
+            margin-top: 50px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        h1 {
+            color: #f39c12;
+            animation: slideInTop 1s ease-in-out;
+        }
+        .question {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 1.2s ease-in-out;
+        }
+        .btn-option {
+            margin: 10px;
+            width: 100%;
+            max-width: 300px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-option:hover {
+            background-color: #f39c12;
+            color: #000;
+            transform: scale(1.05);
+        }
+        .btn-option.selected {
+            background-color: #28a745;
+            color: #ffffff;
+            box-shadow: 0px 0px 10px #28a745;
+            transform: scale(1.1);
+        }
+        #submitQuiz {
+            background-color: #007bff;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+        #submitQuiz:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        #resultMessage {
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideInTop {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 Film Quiz Challenge 🎮</h1>
+        <p>Answer all questions and win a discount if you score high!</p>
+        
+        <div id="quizContainer">
+            <!-- Question 1 -->
+            <div class="question" data-score="2">
+                <h4>1. Which movie won the Oscar for Best Picture in 2020?</h4>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 2)">Parasite</button>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 0)">1917</button>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 0)">Joker</button>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 0)">Ford v Ferrari</button>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question" data-score="2">
+                <h4>2. Who directed the movie 'Inception'?</h4>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 2)">Christopher Nolan</button>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 0)">James Cameron</button>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 0)">Steven Spielberg</button>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 0)">Ridley Scott</button>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question" data-score="2">
+                <h4>3. Who played 'The Joker' in 2019's movie 'Joker'?</h4>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 2)">Joaquin Phoenix</button>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 0)">Heath Ledger</button>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 0)">Jared Leto</button>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 0)">Jack Nicholson</button>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question" data-score="2">
+                <h4>4. What is the highest-grossing film of all time?</h4>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 0)">Titanic</button>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 2)">Avatar</button>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 0)">Avengers: Endgame</button>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 0)">Frozen II</button>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question" data-score="2">
+                <h4>5. Which movie features the character 'Jack Sparrow'?</h4>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 2)">Pirates of the Caribbean</button>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 0)">The Hobbit</button>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 0)">Peter Pan</button>
+                <button class="btn btn-outline-light btn-option" onclick="selectOption(this, 0)">Alice in Wonderland</button>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button id="submitQuiz" class="btn btn-primary mt-4" onclick="submitQuiz()">Submit</button>
+        <div id="resultMessage"></div>
+    </div>
+
+    <!-- Confetti.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti"></script>
+
+    <script>
+        let totalScore = 0;
+
+        // Handle option selection
+        function selectOption(button, score) {
+            const parent = button.parentElement;
+            const options = parent.querySelectorAll('.btn-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+
+            button.classList.add('selected');
+            parent.dataset.selectedScore = score;
+        }
+
+        // Play sound effect
+        function playCelebrationSound() {
+            const audio = new Audio('./music/discount.mp3'); // Example sound
+            audio.play();
+        }
+         // Play sound effect
+         function playloserSound() {
+            const audio = new Audio('./music/noDiscount.mp3'); // Example sound
+            audio.play();
+        }
+
+        // Trigger confetti animation
+        function triggerConfetti() {
+            confetti({
+                particleCount: 200,
+                spread: 70,
+                origin: { x: 0.5, y: 0.5 }
+            });
+        }
+
+        // Submit and evaluate quiz
+        function submitQuiz() {
+            totalScore = 0;
+            const questions = document.querySelectorAll('.question');
+
+            questions.forEach(question => {
+                const selectedScore = parseInt(question.dataset.selectedScore || "0");
+                totalScore += selectedScore;
+            });
+
+            const resultDiv = document.getElementById("resultMessage");
+            
+            if (totalScore >= 8) {
+                resultDiv.innerHTML = "<h3 class='text-success'>🎉 Great job! You earned a 20% discount!</h3>";
+                playCelebrationSound(); // Play sound
+                triggerConfetti(); // Trigger confetti animation
+                setTimeout(() => window.location.href = "discounted_booking.html", 4000);
+            } else {
+                resultDiv.innerHTML = "<h3 class='text-danger'>😢 No discount this time. Try again!</h3>";
+                playloserSound();
+                setTimeout(() => window.location.href = "noDiscount_booking.html", 4000);
+            }
+        }
+    </script>
+</body>

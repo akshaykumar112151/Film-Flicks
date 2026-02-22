@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Movie Ticket</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #ff8c00, #ff4500);
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+        .container {
+            margin-top: 50px;
+            text-align: center;
+        }
+        .ticket-card {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.6);
+            margin-bottom: 40px;
+            position: relative;
+        }
+        h1 {
+            color: #ffe942;
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        .ticket-details {
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+        .ticket-details p {
+            margin: 15px 0;
+        }
+        .btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #ffe942;
+            border: none;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background-color: #ffb400;
+            transform: scale(1.1);
+        }
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+            color: #fff;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+            transform: scale(1.1);
+        }
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        /* Custom style for the "by FilmFlicks" text */
+        .filmflicks {
+            font-family: cursive;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffe942;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+            padding: 5px 15px;
+            border-radius: 15px;
+            animation: bounce 1.5s infinite;
+            margin-top: 15px;
+        }
+
+        /* Animation for the "by FilmFlicks" text */
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Movie Ticket 🎟️</h1>
+        <div class="ticket-card mx-auto" style="max-width: 600px;">
+            <h3 class="card-title">Booking Confirmation</h3>
+            <div class="ticket-details">
+                <p><strong>Name:</strong> <span id="userName">Loading...</span></p>
+                <p><strong>Email:</strong> <span id="userEmail">Loading...</span></p>
+                <p><strong>Selected Seats:</strong> <span id="selectedSeats">Loading...</span></p>
+                <p><strong>Date:</strong> <span id="date">Loading...</span></p>
+                <p><strong>Time Slot:</strong> <span id="timeSlot">Loading...</span></p>
+                <p><strong>Amount Paid:</strong> <span id="amountPaid">Loading...</span></p>
+            </div>
+            <!-- FilmFlicks placed just above the buttons -->
+            <div class="filmflicks">by FilmFlicks</div>
+            <div class="card-footer">
+                <button class="btn btn-primary" onclick="window.location.href='index.html'">Go to Homepage</button>
+                <button class="btn btn-success mt-3" id="downloadTicket">Download Ticket</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        // Retrieve data from localStorage
+        const userName = localStorage.getItem('userName') || "N/A";
+        const userEmail = localStorage.getItem('userEmail') || "N/A";
+        const selectedSeats = localStorage.getItem('selectedSeats') || "N/A";
+        const amountPaid = localStorage.getItem('amountPaid') || "160 Rs";
+        const timeSlot = localStorage.getItem('timeSlot') || "N/A";
+        const date = localStorage.getItem('date') || "N/A";
+
+        // Display data on the page
+        document.getElementById('userName').textContent = userName;
+        document.getElementById('userEmail').textContent = userEmail;
+        document.getElementById('selectedSeats').textContent = selectedSeats;
+        document.getElementById('amountPaid').textContent = amountPaid;
+        document.getElementById('date').textContent = date;
+        document.getElementById('timeSlot').textContent = timeSlot;
+
+        // Download Ticket Functionality using jsPDF
+        document.getElementById('downloadTicket').addEventListener('click', function () {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFont('Arial', 'normal');
+            doc.setFontSize(18);
+            doc.text("Your Movie Ticket 🎟️", 20, 20);
+            
+            doc.setFontSize(14);
+            doc.text(`Name: ${userName}`, 20, 40);
+            doc.text(`Email: ${userEmail}`, 20, 50);
+            doc.text(`Selected Seats: ${selectedSeats}`, 20, 60);
+            doc.text(`Date: ${date}`, 20, 70); 
+            doc.text(`Time Slot: ${timeSlot}`, 20, 80); 
+            doc.text(`Amount Paid: ${amountPaid}`, 20, 90); // Adjusted to prevent overlap
+
+            // Add "by FilmFlicks" at the bottom in PDF
+            doc.setFontSize(10);
+            doc.text("by FilmFlicks", 20, 120);  // Position this just above the footer
+
+            // Save the ticket as PDF
+            doc.save('movie-ticket.pdf');
+        });
+    </script>
+</body>
+</html>

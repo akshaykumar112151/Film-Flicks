@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discounted Booking</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(120deg, #f1820b, #e95241);
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            padding: 0;
+            margin: 10px;
+            min-height: 100vh;
+        }
+        .container {
+            margin-top: 50px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        h1 {
+            color: #ffe942;
+            font-size: 2.5rem;
+            font-family:cursive;
+            font-weight: 700;
+            margin-bottom: 20px;
+            animation: bounceIn 1.5s ease-in-out;
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            animation: slideInUp 1.2s ease-in-out;
+        }
+        .card-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffe942;
+            border-bottom: 2px solid #f39c12;
+            margin-bottom: 15px;
+        }
+        .discount {
+            color: #d1e231;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .btn-pay {
+            background-color: #ffd380;
+            border: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 15px;
+            width: 100%;
+            border-radius: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .btn-pay:hover {
+            background-color: #fff946;
+            transform: scale(1.05);
+        }
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes bounceIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes slideInUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .form-control:focus {
+            border-color: #f39c12;
+            box-shadow: 0 0 8px #f39c12;
+        }
+        .validation-error {
+            color: #121010;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card mx-auto" style="max-width: 500px;">
+            <div class="card-header text-center">Payment Details</div>
+            <div class="card-body">
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" class="form-control" placeholder="Enter your name">
+                        <div class="validation-error" id="nameError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter your email">
+                        <div class="validation-error" id="emailError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact">Contact Number</label>
+                        <input type="tel" id="contact" class="form-control" placeholder="Enter your contact number">
+                        <div class="validation-error" id="contactError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="timeSlot">Select Time Slot</label>
+                        <select id="timeSlot" class="form-control">
+                            <option value="">Choose a time slot</option>
+                            <option value="10:00 AM - 1:00 PM">10:00 AM - 1:00 PM</option>
+                            <option value="2:00 PM - 5:00 PM">2:00 PM - 5:00 PM</option>
+                            <option value="6:00 PM - 9:00 PM">6:00 PM - 9:00 PM</option>
+                        </select>
+                        <div class="validation-error" id="timeSlotError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Select Date</label>
+                        <input type="date" id="date" class="form-control">
+                        <div class="validation-error" id="dateError"></div>
+                    </div>
+                    <div class="text-center mb-4">
+                        <p class="mb-1">Amount: <span class="discount">200 Rs</span></p>
+                        
+                    </div>
+                    <button type="button" id="payNow" class="btn btn-pay">Pay Now</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // Retrieve the selected seats from localStorage
+            const selectedSeats = JSON.parse(localStorage.getItem("selectedSeats"));
+
+            if (selectedSeats && selectedSeats.length > 0) {
+                // Create a string with the selected seats and display it
+                const seatsDisplay = selectedSeats.join("<br>");
+                const selectedSeatsDiv = document.createElement("div");
+                selectedSeatsDiv.innerHTML = ` 
+                    <p><strong>Your Selected Seats:</strong></p>
+                    <p>${seatsDisplay}</p>
+                `;
+                selectedSeatsDiv.style.textAlign = 'center';  // Center text horizontally
+                selectedSeatsDiv.style.marginBottom = '20px';  // Optional, to add some space below
+                selectedSeatsDiv.style.fontSize = '1.2rem';  // Adjust font size
+                selectedSeatsDiv.style.color = '#fff';  // Text color (white)
+                // Insert the selected seats information just after the h1 tag
+                const container = document.querySelector(".container");
+                container.insertBefore(selectedSeatsDiv, container.querySelector("h1").nextSibling);
+            }
+        };
+
+        document.getElementById('payNow').addEventListener('click', function() {
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const contact = document.getElementById('contact').value.trim();
+            const timeSlot = document.getElementById('timeSlot').value;
+            const date = document.getElementById('date').value;
+
+            // Save form data to localStorage
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userContact', contact);
+            localStorage.setItem('timeSlot', timeSlot);
+            localStorage.setItem('date', date);
+            localStorage.setItem('amountPaid', '200 Rs.');  // Fixed amount as per discount
+
+            // Save selected seats to localStorage
+            const selectedSeats = JSON.parse(localStorage.getItem("selectedSeats")) || [];
+            localStorage.setItem('selectedSeats', JSON.stringify(selectedSeats));
+
+            let isValid = true;
+
+            // Validation logic
+            if (!name) {
+                document.getElementById('nameError').textContent = "Name is required.";
+                isValid = false;
+            } else {
+                document.getElementById('nameError').textContent = "";
+            }
+
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('emailError').textContent = "Valid email is required.";
+                isValid = false;
+            } else {
+                document.getElementById('emailError').textContent = "";
+            }
+
+            if (!contact || !/^\d{10}$/.test(contact)) {
+                document.getElementById('contactError').textContent = "Valid 10-digit contact number is required.";
+                isValid = false;
+            } else {
+                document.getElementById('contactError').textContent = "";
+            }
+
+            if (!timeSlot) {
+                document.getElementById('timeSlotError').textContent = "Please select a time slot.";
+                isValid = false;
+            } else {
+                document.getElementById('timeSlotError').textContent = "";
+            }
+
+            if (!date) {
+                document.getElementById('dateError').textContent = "Please select a date.";
+                isValid = false;
+            } else {
+                document.getElementById('dateError').textContent = "";
+            }
+
+            // Payment successful logic
+            if (isValid) {
+                // Play sound effect
+                const audio = new Audio('./music/payment.mp3'); // Example sound
+                audio.play();
+
+                // Show success message
+                document.body.innerHTML = `
+                    <div style="text-align: center; margin-top: 20%;">
+                        <h1 style="color: #d1e231; font-size: 3rem; animation: bounceIn 2s ease-in-out;">🎉 Payment Successful! 🎉</h1>
+                        <p style="font-size: 1.5rem;">Thank you, <strong>${name}</strong>, for booking with us.</p>
+                        <p style="font-size: 1.2rem;">Your payment of <strong>200 Rs.</strong> has been successfully received.</p>
+                        <button class="btn btn-primary mt-3" onclick="window.location.href='index.html'">Go to Homepage</button><br><br>
+                        <button class="btn btn-primary mt-3" onclick="window.location.href='ticket.html'">Show my Ticket</button>
+                    </div>`;
+            }
+        });
+    </script>
+</body>
+</html>
