@@ -44,6 +44,9 @@ for the **Computer Science & Engineering** curriculum.
 **Objective:**
 To apply web technologies, logical problem-solving, and database concepts in a real-world themed application.
 
+## ▶️ Live Demo
+https://film-flicks-2024.netlify.app
+
 ## 📂 Folder Structure
 ```bash
 FilmFlicks/
